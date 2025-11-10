@@ -11,7 +11,6 @@ const app = express();
 app.use(express.json());
 app.use(clerkMiddleware()); // req.auth will now be available in req.auth object
 
-app.use(express.json());
 app.use('/api/inngest', serve({ client: inngest, functions }));
 
 app.get('/', (req, res) => {
