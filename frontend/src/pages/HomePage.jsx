@@ -5,6 +5,7 @@ import { useStreamChat } from '../hooks/useStreamChat';
 import PageLoader from '../components/PageLoader';
 import CreateChannelModal from '../components/CreateChannelModal';
 import CustomChannelPreview from '../components/CustomChannelPreview';
+import UsersList from '../components/UsersList';
 import '../styles/stream-chat-theme.css';
 import {
   Chat,
@@ -114,6 +115,7 @@ const HomePage = () => {
                           <span>Direct Messages</span>
                         </div>
                       </div>
+                      <UsersList activeChannel={activeChannel} />
                     </div>
                   )}
                 />
