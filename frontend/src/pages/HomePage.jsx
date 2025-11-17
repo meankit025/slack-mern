@@ -17,6 +17,7 @@ import {
   Window,
 } from 'stream-chat-react';
 import { HashIcon, PlusIcon, UsersIcon } from 'lucide-react';
+import CustomChannelHeader from '../components/CustomChannelHeader';
 
 const HomePage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -128,6 +129,7 @@ const HomePage = () => {
             <Channel channel={activeChannel}>
               <Window>
                 {/* CUSTOM CHANNEL HEADER WHICH HAVING USERTS, VIDEO ICONS,PIN ETC */}
+                <CustomChannelHeader />
                 <MessageList />
                 <MessageInput />
               </Window>
