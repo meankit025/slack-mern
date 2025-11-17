@@ -1,12 +1,9 @@
 import { UserButton } from '@clerk/clerk-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useStreamChat } from '../hooks/useStreamChat';
 import PageLoader from '../components/PageLoader';
-import CreateChannelModal from '../components/CreateChannelModal';
-import CustomChannelPreview from '../components/CustomChannelPreview';
-import UsersList from '../components/UsersList';
-import '../styles/stream-chat-theme.css';
+
 import {
   Chat,
   Channel,
@@ -16,7 +13,12 @@ import {
   Thread,
   Window,
 } from 'stream-chat-react';
+
+import '../styles/stream-chat-theme.css';
 import { HashIcon, PlusIcon, UsersIcon } from 'lucide-react';
+import CreateChannelModal from '../components/CreateChannelModal';
+import CustomChannelPreview from '../components/CustomChannelPreview';
+import UsersList from '../components/UsersList';
 import CustomChannelHeader from '../components/CustomChannelHeader';
 
 const HomePage = () => {
@@ -24,24 +26,21 @@ const HomePage = () => {
   const [activeChannel, setActiveChannel] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { chatClient, isLoading, error } = useStreamChat();
-  console.log('Stream Chat Client:', chatClient);
+  const { chatClient, error, isLoading } = useStreamChat();
 
-  // set the active channels from url params
+  // set active channel from URL params
   useEffect(() => {
     if (chatClient) {
       const channelId = searchParams.get('channel');
-      console.log(`channel name afterb refresh`, channelId);
-
       if (channelId) {
         const channel = chatClient.channel('messaging', channelId);
         setActiveChannel(channel);
       }
     }
-  }, [searchParams, chatClient]);
+  }, [chatClient, searchParams]);
 
+  // todo: handle this with a better component
   if (error) return <p>Something went wrong...</p>;
-
   if (isLoading || !chatClient) return <PageLoader />;
 
   return (
@@ -55,13 +54,12 @@ const HomePage = () => {
               <div className="team-channel-list__header gap-4">
                 <div className="brand-container">
                   <img src="/logo.png" alt="Logo" className="brand-logo" />
-                  <span className="brand-name">Slack</span>
+                  <span className="brand-name">Slap</span>
                 </div>
                 <div className="user-button-wrapper">
                   <UserButton />
                 </div>
               </div>
-
               {/* CHANNELS LIST */}
               <div className="team-channel-list__content">
                 <div className="create-channel-section">
@@ -128,7 +126,6 @@ const HomePage = () => {
           <div className="chat-main">
             <Channel channel={activeChannel}>
               <Window>
-                {/* CUSTOM CHANNEL HEADER WHICH HAVING USERTS, VIDEO ICONS,PIN ETC */}
                 <CustomChannelHeader />
                 <MessageList />
                 <MessageInput />
@@ -140,14 +137,10 @@ const HomePage = () => {
         </div>
 
         {isCreateModalOpen && (
-          <CreateChannelModal
-            isOpen={isCreateModalOpen}
-            onClose={() => setIsCreateModalOpen(false)}
-          />
+          <CreateChannelModal onClose={() => setIsCreateModalOpen(false)} />
         )}
       </Chat>
     </div>
   );
 };
-
 export default HomePage;
