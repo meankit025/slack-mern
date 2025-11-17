@@ -1,7 +1,11 @@
 import { Inngest } from 'inngest';
 import { connectDB } from './db.js';
 import { User } from '../models/User.model.js';
-import { deleteStreamUser, upsertStreamUser } from './stream.js';
+import {
+  addUserToPublicChannels,
+  deleteStreamUser,
+  upsertStreamUser,
+} from './stream.js';
 
 export const inngest = new Inngest({ id: 'slack-clone' });
 
@@ -27,6 +31,8 @@ const syncUser = inngest.createFunction(
       name: newUser.name,
       image: newUser.image,
     });
+
+    await addUserToPublicChannels(newUser.clerksId.toString());
   }
 );
 
